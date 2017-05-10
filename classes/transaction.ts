@@ -1,6 +1,6 @@
 import { ITransaction } from '../interfaces/transaction';
 
-class Transacton implements ITransaction {
+class Transaction implements ITransaction {
     success: boolean;
     // amount will be positive for deposits and negative for withdrawals:
     amount: number;
@@ -12,4 +12,4 @@ class Transacton implements ITransaction {
     errorMessage: string;
 }
 
-export { Transacton };
+export { Transaction };
