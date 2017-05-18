@@ -25,4 +25,8 @@ console.log(adrien.savingsAccount.accountHistory);
 
 adrien.retirementAccount.depositMoney(100, "Retirement Check");
 adrien.retirementAccount.depositMoney(-10, "Retirement Test");
+adrien.retirementAccount.withdrawMoney(-5000, "For kicks", TransactionOrigin.web);
+adrien.retirementAccount.withdrawMoney(100, "For stuff", TransactionOrigin.branch);
 console.log(adrien.retirementAccount.accountHistory);
+
+

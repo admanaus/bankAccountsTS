@@ -12,6 +12,7 @@ class Account implements IAccount {
     currentDate: Date = new Date();
     accountAgeMonths: number = 0;
     balance: number;
+    transactionsThisMonth: number = 0; // only tracks web and phone transactions
     public accountHistory : Transaction[] = [];
     public interestRate: number;
     constructor(person: Person,
@@ -57,7 +58,7 @@ class Account implements IAccount {
 
     depositMoney(amount: number, description: string) : Transaction {
         if (amount > 0){
-            let transaction: Transaction = this._transactionSucess(amount, description);
+            let transaction: Transaction = this._transactionSuccess(amount, description);
             this.accountHistory.push(transaction);
             return transaction;
         } else if (amount <= 0) {
@@ -80,9 +81,9 @@ class Account implements IAccount {
             this.currentDate = futureDate;
 
             months = months + ( years * 12);
+            if (months > 0){ this.transactionsThisMonth = 0; }
             years = months / 12;
             console.log(`Calender Months Advanced: ${months}`);
-
 
             let P = this.balance;
             let r = this.interestRate;
@@ -90,10 +91,9 @@ class Account implements IAccount {
             let t = years;
 
             this.balance = P * Math.pow(( 1 + (r / n)),(n * t));
-
         }
     };
-    private _transactionSucess(amount: number, description: string): Transaction{
+    private _transactionSuccess(amount: number, description: string): Transaction{
         this.balance = this.balance + amount;
         let transaction: Transaction = new Transaction;
         transaction.success = true;
@@ -121,9 +121,9 @@ class Account implements IAccount {
         transaction.amount = Math.abs(transaction.amount) * (-1);
 
         if (Math.abs(transaction.amount) <= this.balance){
-            let completedTransaction: Transaction = this._transactionSucess(
+            let completedTransaction: Transaction = this._transactionSuccess(
                 transaction.amount,
-                "Checking withdraw Success.");
+                "Checking Withdraw Success.");
             return completedTransaction;
         } else {
             let completedTransaction: Transaction = this._transactionFailure(
@@ -136,11 +136,67 @@ class Account implements IAccount {
     }
     private _savingsWithdraw(transaction: Transaction,
                              transactionOrigin: TransactionOrigin): Transaction{
-        return transaction;
+        transaction.amount = Math.abs(transaction.amount) * (-1);
+        if (Math.abs(transaction.amount) <= this.balance){
+
+            if (transactionOrigin == TransactionOrigin.phone || transactionOrigin == TransactionOrigin.web){
+                this.transactionsThisMonth++;  // only tracks web/phone transactions
+            }
+
+
+            if (this.transactionsThisMonth <= 6 || transactionOrigin == TransactionOrigin.branch){
+                let completedTransaction: Transaction = this._transactionSuccess(
+                    transaction.amount,
+                    "Savings withdraw success.");
+                this.accountHistory.push(completedTransaction);
+                return completedTransaction;
+            } else {
+                let completedTransaction: Transaction = this._transactionFailure(
+                    transaction.amount,
+                    "Savings withdraw failure.",
+                    "Six or more Phone/Web transactions have been completed this month.");
+                this.accountHistory.push(completedTransaction);
+                return completedTransaction;
+            }
+        } else {
+            let completedTransaction: Transaction = this._transactionFailure(
+                transaction.amount,
+                "Savings withdraw failure",
+                "Insufficient funds");
+            this.accountHistory.push(completedTransaction);
+            return completedTransaction;
+        }
+
+
     }
     private _retirementWithdraw(transaction: Transaction,
                                 transactionOrigin: TransactionOrigin): Transaction{
-        return transaction;
+        let age = this._getAge();
+        let fee: number = 0;
+        if (age < 60 ){ fee = Math.abs(transaction.amount) * (0.1)}
+        transaction.amount = Math.abs(transaction.amount) * (-1);
+        if (Math.abs(transaction.amount) + fee <= this.balance) {
+            let message = "Retirement withdraw success.  You were charged $" + fee.toFixed(2) + " in fees.";
+            let completedTransaction: Transaction = this._transactionSuccess(
+                transaction.amount - fee,
+                message);
+            this.accountHistory.push(completedTransaction);
+            return completedTransaction;
+        } else {
+            let message = "Retirement withdraw failure.  Remember there's a $" + fee.toFixed(2) + " fee associated with this transaction."
+            let completedTransaction: Transaction = this._transactionFailure(
+                transaction.amount - fee,
+                message,
+                "Insufficient funds");
+            this.accountHistory.push(completedTransaction);
+            return completedTransaction;
+        }
+    }
+    private _getAge(): number {
+        let years: number = this.accountCreationDate.getFullYear() - this.accountHolderBirthDate.getFullYear();
+        let months: number = this.accountCreationDate.getMonth() - this.accountHolderBirthDate.getMonth();
+        let age: number = years + ( months / 12);
+        return age;
     }
 
 }
