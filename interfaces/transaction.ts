@@ -1,5 +1,4 @@
-interface ITransaction
-{
+export interface ITransaction {
     success: boolean;
     // amount will be positive for deposits and negative for withdrawals:
     amount: number;
@@ -10,4 +9,3 @@ interface ITransaction
     // errorMessage will be an empty string when success is true:
     errorMessage: string;
 }
-export { ITransaction }

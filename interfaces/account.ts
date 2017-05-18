@@ -1,9 +1,10 @@
 import { ITransaction } from './transaction';
 import { TransactionOrigin, AccountType } from '../enums'
 
-interface IAccount {
+export interface IAccount {
     accountHolderName: string;
     accountHolderBirthDate: Date;
+    accountCreationDate: Date;
     balance: number;
     withdrawMoney(amount: number,
                   description: string,
@@ -13,5 +14,3 @@ interface IAccount {
     advanceDate(numberOfDays: number);
     accountType: AccountType;
 }
-
-export { IAccount }
