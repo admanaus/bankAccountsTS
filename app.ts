@@ -18,3 +18,7 @@ adrienAccount.advanceDate(30);
 adrienAccount.advanceDate(365);
 adrienAccount.advanceDate(1000);
 adrienAccount.advanceDate(5);
+adrienAccount.depositMoney(100, "payCheck");
+adrienAccount.depositMoney(0, "eewps");
+adrienAccount.depositMoney(-10, 'try that!');
+console.log(adrienAccount.accountHistory);
