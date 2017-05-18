@@ -148,14 +148,12 @@ class Account implements IAccount {
                 let completedTransaction: Transaction = this._transactionSuccess(
                     transaction.amount,
                     "Savings withdraw success.");
-                this.accountHistory.push(completedTransaction);
                 return completedTransaction;
             } else {
                 let completedTransaction: Transaction = this._transactionFailure(
                     transaction.amount,
                     "Savings withdraw failure.",
                     "Six or more Phone/Web transactions have been completed this month.");
-                this.accountHistory.push(completedTransaction);
                 return completedTransaction;
             }
         } else {
@@ -180,7 +178,6 @@ class Account implements IAccount {
             let completedTransaction: Transaction = this._transactionSuccess(
                 transaction.amount - fee,
                 message);
-            this.accountHistory.push(completedTransaction);
             return completedTransaction;
         } else {
             let message = "Retirement withdraw failure.  Remember there's a $" + fee.toFixed(2) + " fee associated with this transaction."
@@ -188,14 +185,14 @@ class Account implements IAccount {
                 transaction.amount - fee,
                 message,
                 "Insufficient funds");
-            this.accountHistory.push(completedTransaction);
             return completedTransaction;
         }
     }
     private _getAge(): number {
-        let years: number = this.accountCreationDate.getFullYear() - this.accountHolderBirthDate.getFullYear();
-        let months: number = this.accountCreationDate.getMonth() - this.accountHolderBirthDate.getMonth();
+        let years: number = this.currentDate.getFullYear() - this.accountHolderBirthDate.getFullYear();
+        let months: number = this.currentDate.getMonth() - this.accountHolderBirthDate.getMonth();
         let age: number = years + ( months / 12);
+        console.log(`Age: ${age}`);
         return age;
     }
 
