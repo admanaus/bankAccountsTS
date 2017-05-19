@@ -176,9 +176,15 @@ class Account implements IAccount {
         if (Math.abs(transaction.amount) + fee <= this.balance) {
             let message = "Retirement withdraw success.  You were charged $" + fee.toFixed(2) + " in fees.";
             let completedTransaction: Transaction = this._transactionSuccess(
-                transaction.amount - fee,
+                transaction.amount,
                 message);
+            if (fee > 0){
+                let feeTransaction: Transaction = this._transactionSuccess(fee, "This is a $" + fee.toFixed(2) + " fee.");
+                this.accountHistory.push(feeTransaction);
+            }
+
             return completedTransaction;
+
         } else {
             let message = "Retirement withdraw failure.  Remember there's a $" + fee.toFixed(2) + " fee associated with this transaction."
             let completedTransaction: Transaction = this._transactionFailure(
