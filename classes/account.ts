@@ -81,14 +81,14 @@ class Account implements IAccount {
             this.currentDate = futureDate;
 
             months = months + ( years * 12);
-            if (months > 0){ this.transactionsThisMonth = 0; }
-            years = months / 12;
+            if (months > 0) { this.transactionsThisMonth = 0; } //reset the transaction count for phone/web
+            // years = months / 12;
             console.log(`Calender Months Advanced: ${months}`);
 
             let P = this.balance;
-            let r = this.interestRate;
-            let n = 12;
-            let t = years;
+            let r = this.interestRate / 12;
+            let n = 1;
+            let t = months;
 
             this.balance = P * Math.pow(( 1 + (r / n)),(n * t));
         }

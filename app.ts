@@ -1,6 +1,5 @@
 
 import { TransactionOrigin, AccountType } from './enums';
-import { IAccount } from './interfaces/account';
 import {Account} from "./classes/account";
 import {Person} from "./classes/person";
 
@@ -11,7 +10,7 @@ adrien.checkingAccount = new Account(adrien, AccountType.checking);
 adrien.savingsAccount = new Account(adrien, AccountType.savings);
 adrien.retirementAccount = new Account(adrien, AccountType.retirement);
 
-adrien.checkingAccount.advanceDate(100);
+adrien.checkingAccount.advanceDate(365);
 adrien.savingsAccount.advanceDate(200);
 adrien.retirementAccount.advanceDate(300);
 
