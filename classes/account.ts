@@ -179,14 +179,14 @@ class Account implements IAccount {
                 transaction.amount,
                 message);
             if (fee > 0){
-                let feeTransaction: Transaction = this._transactionSuccess(fee, "This is a $" + fee.toFixed(2) + " fee.");
+                let feeTransaction: Transaction = this._transactionSuccess(fee * (-1), "This is a $" + fee.toFixed(2) + " fee.");
                 this.accountHistory.push(feeTransaction);
             }
 
             return completedTransaction;
 
         } else {
-            let message = "Retirement withdraw failure.  Remember there's a $" + fee.toFixed(2) + " fee associated with this transaction."
+            let message = "Retirement withdraw failure.  Remember there's a $" + fee.toFixed(2) + " fee associated with this transaction.";
             let completedTransaction: Transaction = this._transactionFailure(
                 transaction.amount - fee,
                 message,
