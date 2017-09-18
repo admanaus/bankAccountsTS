@@ -6,7 +6,7 @@ Please ' npm install ' to install [Moment.js](http://momentjs.com/) package
 
 
 
-#On a totally unrelated note, here is some markdown syntax refrence material:
+# On a totally unrelated note, here is some markdown syntax refrence material:
 
 Markdown: Syntax
 ================
