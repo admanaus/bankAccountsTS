@@ -1,6 +1,5 @@
 # bankAccountsTS
 A TS practice exercise  - banking app
 
-Please ' npm install ' to install moment package 
+Please ' npm install ' to install [moment](http://momentjs.com/) package 
 
-- more info on moment: momentjs.com
